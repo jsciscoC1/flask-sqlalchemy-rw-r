@@ -13,6 +13,12 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 db = SQLAlchemy(session_options={"autocommit": False, "autoflush": False})
 migrate = Migrate(app, db)
 
+
+# logger.info("Initting...")
+# print("Inittiing...")
+# init(app, db)
+
+
 @app.route("/")
 def hello():
     return "Hello, world!"
