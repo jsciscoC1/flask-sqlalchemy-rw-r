@@ -1,4 +1,5 @@
 from functools import wraps
+from random import choice
 
 from flask import g, request
 
@@ -14,7 +15,8 @@ class FlaskReplicated:
         if "replicated" not in app.extensions:
             app.extensions["replicated"] = self
             binds = app.config.get("SQLALCHEMY_BINDS") or {}
-            if "replica" in binds:
+            print(binds)
+            if "replica_0" in binds:
                 print("Replica is in binds")
                 app.before_request(self._pick_database)
                 db = app.extensions["sqlalchemy"].db
@@ -26,7 +28,7 @@ class FlaskReplicated:
                         use_master = getattr(g, "use_master", False)
                         print(f"Use Replica: {use_replica} ; Use master: {use_master}")
                         if use_replica and not use_master:
-                            bind = "replica"
+                            bind = random_replica(app.config.get("REPLICA_SET"))
                     return get_engine_vanilla(app, bind)
 
                 db.get_engine = get_replicated_engine
@@ -49,6 +51,8 @@ class FlaskReplicated:
         if request.method == 'GET':
             g.use_replica = True
 
+def random_replica(replicas):
+    return choice(replicas)
 
 def use_master_database(func):
     def wrapper(*args, **kwargs):

@@ -33,9 +33,25 @@ services:
       - POSTGRESQL_DATABASE=customdatabase
       - REPMGR_PASSWORD=repmgrpassword
       - REPMGR_PRIMARY_HOST=pg-0
-      - REPMGR_PARTNER_NODES=pg-0,pg-1
+      - REPMGR_PARTNER_NODES=pg-0,pg-1,pg-2
       - REPMGR_NODE_NAME=pg-1
       - REPMGR_NODE_NETWORK_NAME=pg-1
+  pg-2:
+    image: bitnami/postgresql-repmgr:11
+    ports:
+      - "49155:5432"
+    volumes:
+      - pg_2_data:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=adminpassword
+      - POSTGRESQL_USERNAME=customuser
+      - POSTGRESQL_PASSWORD=custompassword
+      - POSTGRESQL_DATABASE=customdatabase
+      - REPMGR_PASSWORD=repmgrpassword
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PARTNER_NODES=pg-0,pg-1,pg-2
+      - REPMGR_NODE_NAME=pg-2
+      - REPMGR_NODE_NETWORK_NAME=pg-2
 #  pgpool:
 #    image: bitnami/pgpool:4.2.6
 #    ports:
@@ -58,5 +74,7 @@ volumes:
   pg_0_data:
     driver: local
   pg_1_data:
+    driver: local
+  pg_2_data:
     driver: local
 
