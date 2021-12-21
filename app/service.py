@@ -18,6 +18,7 @@ def get_author(name: str, session):
 
 
 def get_authors():
+    # TODO: This is kind of wrong.
     e = db.get_engine(app=current_app, bind="replica")
     print(e)
     Session = sessionmaker(e)
