@@ -1,7 +1,8 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from flask_restx import Api, Resource
 
 from app import service
+from app.schemas import AuthorSchema
 
 api_blueprint = Blueprint("api", __name__, url_prefix="/")
 api = Api(
@@ -10,10 +11,15 @@ api = Api(
     description="SQL Load Balancing Experiments",
 )
 
+author_schema = AuthorSchema()
+
 
 class AuthorList(Resource):
     def get(self):
-        return service.get_authors()
+        return author_schema.dump(service.get_authors(), many=True)
+
+    def post(self):
+        return author_schema.dump(service.create_author(request.json))
 
 
 class AuthorDetail(Resource):

@@ -7,7 +7,7 @@ services:
   pg-0:
     image: bitnami/postgresql-repmgr:11
     ports:
-      - 5432
+      - "49153:5432"
     volumes:
       - pg_0_data:/bitnami/postgresql
     environment:
@@ -23,7 +23,7 @@ services:
   pg-1:
     image: bitnami/postgresql-repmgr:11
     ports:
-      - 5432
+      - "49154:5432"
     volumes:
       - pg_1_data:/bitnami/postgresql
     environment:

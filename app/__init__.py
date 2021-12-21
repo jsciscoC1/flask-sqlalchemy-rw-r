@@ -15,17 +15,15 @@ def create_app():
         "master": os.getenv("MASTER_DB"),
         "replica": os.getenv("READ_REPLICAS"),
     }
-    # app.config["SQLALCHEMY_POOL_SIZE"] = 10
-    # app.config["SQLALCHEMY_POOL_RECYCLE"] = 1800
-    # app.config["SQLALCHEMY_MAX_OVERFLOW"] = 20
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    from app.extensions import db
+    from app.extensions import db, replicated
 
     # Required to generate migrations
     from .models.models import Book, Author
 
     db.init_app(app)
+    replicated.init_app(app)
 
     from .api import api_blueprint as bp
 
