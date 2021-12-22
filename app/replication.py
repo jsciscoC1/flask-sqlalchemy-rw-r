@@ -48,7 +48,7 @@ class FlaskReplicated:
         # )  # or request.method == 'GET'
         # print(f"Should we use replica database? {use_replica_database}")
         # g.use_replica = use_replica_database
-        if request.method == 'GET':
+        if request.method == 'GET' and "author" in request.path:
             g.use_replica = True
 
 def random_replica(replicas):

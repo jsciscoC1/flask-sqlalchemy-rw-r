@@ -8,3 +8,10 @@ class AuthorSchema(ModelSchema):
         fields = ("id", "name")
 
         model = models.Author
+
+
+class BookSchema(ModelSchema):
+    class Meta:
+        fields = ("id", "name", "author_id")
+
+        model = models.Book

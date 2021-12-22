@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_restx import Api, Resource
 
 from app import service
-from app.schemas import AuthorSchema
+from app.schemas import AuthorSchema, BookSchema
 
 api_blueprint = Blueprint("api", __name__, url_prefix="/")
 api = Api(
@@ -12,6 +12,7 @@ api = Api(
 )
 
 author_schema = AuthorSchema()
+book_schema = BookSchema()
 
 
 class AuthorList(Resource):
@@ -27,7 +28,12 @@ class AuthorDetail(Resource):
 
 
 class BookList(Resource):
-    pass
+    def get(self):
+        return book_schema.dump(service.get_books(), many=True)
+
+    def post(self):
+        book = service.create_book(request.json)
+        return book_schema.dump(book), 201
 
 
 class BookDetail(Resource):
